@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fflix</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="header">
+    <div class="logo" onclick="scrollToTop()">FFLIX</div>
+    
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search movies and TV shows..." autocomplete="off">
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Action, Crime & Thrillers</h1>
+      <p>Watch your favorite movies and series</p>
+      <button onclick="scrollToContent()" class="btn-primary">Browse All</button>
+    </div>
+  </div>
+
+  <div class="content" id="mainContent"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
