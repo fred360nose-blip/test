@@ -73,6 +73,12 @@
     <iframe id="videoFrame" class="player-frame" allowfullscreen></iframe>
   </div>
 
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const title = decodeURIComponent(params.get('title') || 'Unknown Title');
