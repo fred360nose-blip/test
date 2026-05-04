@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPIRE</title>   <!-- Always shows SPIRE -->
+  <title id="pageTitle">SPIRE Player</title>
   <style>
     body {
       margin: 0;
@@ -80,8 +80,8 @@
     let currentSeason = parseInt(params.get('season')) || 1;
     let currentEpisode = parseInt(params.get('episode')) || 1;
 
-    // Page title is always SPIRE
     document.getElementById('title').textContent = title;
+    document.getElementById('pageTitle').textContent = title + " - SPIRE";
 
     const videoFrame = document.getElementById('videoFrame');
     const tvControls = document.getElementById('tv-controls');
@@ -169,7 +169,7 @@
     window.addEventListener('beforeunload', saveToContinueWatching);
   </script>
 
-  <!-- Vercel Analytics -->
+  <!-- Vercel Web Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
