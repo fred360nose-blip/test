@@ -3,56 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>new tab</title>
+  <title>SPIRE</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
-  <style>
-    #login-screen {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #141414;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      flex-direction: column;
-      color: white;
-    }
-    #login-screen input {
-      padding: 15px;
-      width: 280px;
-      font-size: 1.1rem;
-      background: #222;
-      border: 1px solid #444;
-      color: white;
-      border-radius: 4px;
-      margin-bottom: 15px;
-    }
-    #login-screen button {
-      padding: 12px 40px;
-      background: #e50914;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 1.1rem;
-      cursor: pointer;
-    }
-    .error { color: #ff4444; margin-top: 10px; }
-  </style>
 </head>
 <body>
 
   <!-- Password Screen -->
   <div id="login-screen">
-    <h1 style="margin-bottom:30px;">enjoy 👍</h1>
-    <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="off">
-    <button onclick="checkPassword()">Enter</button>
-    <p id="errorMsg" class="error"></p>
+    <h1 style="margin-bottom:30px; color:#e50914;">SPIRE</h1>
+    <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="off" 
+           style="padding:15px; width:280px; font-size:1.1rem; background:#222; border:1px solid #444; color:white; border-radius:4px; margin-bottom:15px;">
+    <button onclick="checkPassword()" 
+            style="padding:12px 40px; background:#e50914; color:white; border:none; border-radius:4px; font-size:1.1rem; cursor:pointer;">Enter</button>
+    <p id="errorMsg" style="color:#ff4444; margin-top:10px;"></p>
   </div>
 
-  <!-- Main Site (hidden until login) -->
+  <!-- Main Site -->
   <div id="main-site" style="display:none;">
     <div class="header">
-      <div class="logo" onclick="scrollToTop()">fredflix</div>
+      <div class="logo" onclick="scrollToTop()">SPIRE</div>
       <div class="search-container">
         <input type="text" id="searchInput" placeholder="Search movies and TV shows..." autocomplete="off">
       </div>
@@ -60,8 +30,8 @@
 
     <div class="hero">
       <div class="hero-content">
-        <h1>for educational purposes</h1>
-        <p>bio of website didnt know what to write</p>
+        <h1>Action, Crime & Thrillers</h1>
+        <p>Watch your favorite movies and series</p>
         <button onclick="scrollToContent()" class="btn-primary">Browse All</button>
       </div>
     </div>
@@ -71,21 +41,24 @@
 
   <script src="script.js"></script>
 
+  <!-- Vercel Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/@vercel/analytics@latest/dist/index.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    window.va('track', 'pageview');
+  </script>
+
   <script>
     function checkPassword() {
-      const input = document.getElementById('passwordInput').value;
-      const errorMsg = document.getElementById('errorMsg');
-
-      if (input === "ilovefred") {
+      if (document.getElementById('passwordInput').value === "password") {
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-site').style.display = 'block';
       } else {
-        errorMsg.textContent = "Incorrect password. Try again.";
+        document.getElementById('errorMsg').textContent = "Incorrect password";
         document.getElementById('passwordInput').value = '';
       }
     }
 
-    // Allow pressing Enter key
     document.getElementById('passwordInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') checkPassword();
     });
