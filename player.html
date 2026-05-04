@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">Fflix Player</title>
+  <title id="pageTitle">SPIRE Player</title>
   <style>
     body {
       margin: 0;
@@ -61,79 +61,63 @@
 </head>
 <body>
   <button class="back-btn" onclick="goBack()">← Back to Browse</button>
-
   <div class="player-container">
     <h1 class="title" id="title"></h1>
-    
+   
     <div class="controls" id="tv-controls" style="display: none;">
       <select id="seasonSelect" onchange="changeSeason()"></select>
       <select id="episodeSelect" onchange="loadEpisode()"></select>
     </div>
-
     <iframe id="videoFrame" class="player-frame" allowfullscreen></iframe>
   </div>
-
-  <!-- Vercel Web Analytics -->
-  <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const title = decodeURIComponent(params.get('title') || 'Unknown Title');
     const id = params.get('id');
     const type = params.get('type');
-    
+   
     let currentSeason = parseInt(params.get('season')) || 1;
     let currentEpisode = parseInt(params.get('episode')) || 1;
 
     document.getElementById('title').textContent = title;
-    document.getElementById('pageTitle').textContent = title + " - Fflix";
+    document.getElementById('pageTitle').textContent = title + " - SPIRE";
 
     const videoFrame = document.getElementById('videoFrame');
     const tvControls = document.getElementById('tv-controls');
 
     const seasonData = {
-      1396: [7,13,13,13,16],        // Breaking Bad
-      60059: [10,10,10,10,10,13],   // Better Call Saul
-      71694: [10,10,10,10,10,10],   // Snowfall
-      76479: [8,8,8,8,8],           // The Boys
-      66732: [8,9,8,9,8],           // Stranger Things
-      1402: [6,13,16,16,16,16],     // The Walking Dead
-      60574: [6,6,6,6,6,6],         // Peaky Blinders
-      54650: [6,10,10],             // Power
-      94997: [8,8,8,8]              // House of the Dragon / Reacher
+      1396: [7,13,13,13,16],
+      60059: [10,10,10,10,10,13],
+      71694: [10,10,10,10,10,10],
+      76479: [8,8,8,8,8],
+      66732: [8,9,8,9,8],
+      1402: [6,13,16,16,16,16],
+      60574: [6,6,6,6,6,6],
+      54650: [6,10,10],
+      94997: [8,8,8,8]
     };
 
     function saveToContinueWatching() {
-  let list = JSON.parse(localStorage.getItem('continueWatching') || '[]');
-  
-  // Remove old entry
-  list = list.filter(item => !(item.id == id && item.type === type));
-  
-  // Add current progress
-  list.unshift({
-    id: id,
-    type: type,
-    title: title,
-    season: currentSeason,
-    episode: currentEpisode,
-    timestamp: Date.now()
-  });
-
-  // Keep only latest 15 items
-  list = list.slice(0, 15);
-  localStorage.setItem('continueWatching', JSON.stringify(list));
-}
+      let list = JSON.parse(localStorage.getItem('continueWatching') || '[]');
+      list = list.filter(item => !(item.id == id && item.type === type));
+      list.unshift({
+        id: id,
+        type: type,
+        title: title,
+        season: currentSeason,
+        episode: currentEpisode,
+        timestamp: Date.now()
+      });
+      list = list.slice(0, 15);
+      localStorage.setItem('continueWatching', JSON.stringify(list));
+    }
 
     if (type === 'movie') {
       videoFrame.src = `https://player.videasy.net/movie/${id}?overlay=true`;
     } else {
       tvControls.style.display = 'block';
-      
       const episodesPerSeason = seasonData[id] || Array(8).fill(10);
-
       const seasonSelect = document.getElementById('seasonSelect');
       episodesPerSeason.forEach((_, index) => {
         const s = index + 1;
@@ -148,7 +132,6 @@
         const episodeSelect = document.getElementById('episodeSelect');
         episodeSelect.innerHTML = '';
         const epCount = episodesPerSeason[season - 1] || 10;
-        
         for (let e = 1; e <= epCount; e++) {
           const option = document.createElement('option');
           option.value = e;
@@ -165,10 +148,8 @@
     function loadEpisode() {
       const season = parseInt(document.getElementById('seasonSelect').value);
       const episode = parseInt(document.getElementById('episodeSelect').value);
-      
       currentSeason = season;
       currentEpisode = episode;
-      
       videoFrame.src = `https://player.videasy.net/tv/${id}/${season}/${episode}?overlay=true&nextEpisode=true&episodeSelector=true`;
       saveToContinueWatching();
     }
@@ -187,5 +168,11 @@
     setInterval(saveToContinueWatching, 30000);
     window.addEventListener('beforeunload', saveToContinueWatching);
   </script>
+
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
