@@ -86,6 +86,7 @@
     const videoFrame = document.getElementById('videoFrame');
     const tvControls = document.getElementById('tv-controls');
 
+    // Season episode counts
     const seasonData = {
       1396: [7,13,13,13,16],                    // Breaking Bad
       60059: [10,10,10,10,10,13],               // Better Call Saul
@@ -96,7 +97,7 @@
       60574: [6,6,6,6,6,6],                     // Peaky Blinders
       54650: [6,10,10],                         // Power
       94997: [8,8,8,8],                         // Reacher
-      2190: [13,18,17,17,14,17,15,14,14,14,14,14,14,14,14,14,10,10,10,10,10,10,10,2,6,6,5,5,6]  // South Park (29 seasons)
+      2190: [13,18,17,17,14,17,15,14,14,14,14,14,14,14,14,14,10,10,10,10,10,10,10,2,6,6,5,5,6]  // South Park
     };
 
     function saveToContinueWatching() {
@@ -114,13 +115,57 @@
       localStorage.setItem('continueWatching', JSON.stringify(list));
     }
 
+    function populateEpisodes(season) {
+      const episodeSelect = document.getElementById('episodeSelect');
+      episodeSelect.innerHTML = '';
+      const episodesPerSeason = seasonData[id] || Array(8).fill(10);
+      const epCount = episodesPerSeason[season - 1] || 10;
+      
+      for (let e = 1; e <= epCount; e++) {
+        const option = document.createElement('option');
+        option.value = e;
+        option.textContent = `Episode ${e}`;
+        if (e === currentEpisode && season === currentSeason) option.selected = true;
+        episodeSelect.appendChild(option);
+      }
+    }
+
+    function loadEpisode() {
+      const season = parseInt(document.getElementById('seasonSelect').value);
+      const episode = parseInt(document.getElementById('episodeSelect').value);
+      currentSeason = season;
+      currentEpisode = episode;
+
+      // Using multiembed (same as the beta version you sent)
+      videoFrame.src = `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${season}&e=${episode}`;
+      
+      saveToContinueWatching();
+    }
+
+    function changeSeason() {
+      currentSeason = parseInt(document.getElementById('seasonSelect').value);
+      currentEpisode = 1;
+      populateEpisodes(currentSeason);
+      loadEpisode();
+    }
+
+    function goBack() {
+      window.location.href = 'index.html';
+    }
+
+    // Main logic
     if (type === 'movie') {
-      // multiembed movie
       videoFrame.src = `https://multiembed.mov/?video_id=${id}&tmdb=1`;
     } else {
+      // Show TV controls
       tvControls.style.display = 'block';
+
       const episodesPerSeason = seasonData[id] || Array(8).fill(10);
       const seasonSelect = document.getElementById('seasonSelect');
+
+      // Clear old options just in case
+      seasonSelect.innerHTML = '';
+
       episodesPerSeason.forEach((_, index) => {
         const s = index + 1;
         const option = document.createElement('option');
@@ -130,22 +175,13 @@
         seasonSelect.appendChild(option);
       });
 
-      function populateEpisodes(season) {
-        const episodeSelect = document.getElementById('episodeSelect');
-        episodeSelect.innerHTML = '';
-        const epCount = episodesPerSeason[season - 1] || 10;
-        for (let e = 1; e <= epCount; e++) {
-          const option = document.createElement('option');
-          option.value = e;
-          option.textContent = `Episode ${e}`;
-          if (e === currentEpisode && season === currentSeason) option.selected = true;
-          episodeSelect.appendChild(option);
-        }
-      }
-
       populateEpisodes(currentSeason);
       loadEpisode();
     }
 
-    function loadEpisode() {
-      const
+    // Auto-save every 30 seconds
+    setInterval(saveToContinueWatching, 30000);
+    window.addEventListener('beforeunload', saveToContinueWatching);
+  </script>
+</body>
+</html>
