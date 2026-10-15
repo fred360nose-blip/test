@@ -1,4 +1,4 @@
-// script.js - Updated with Ted, Euphoria, and The Capture
+// script.js - Updated with Ted, Euphoria, The Capture + South Park
 
 const mainContent = document.getElementById('mainContent');
 const searchInput = document.getElementById('searchInput');
@@ -92,9 +92,10 @@ const shows = [
   {title: "Gen V", id: 119051},
   {title: "All of Us Are Dead", id: 99966},
   {title: "Wednesday", id: 119051},
-  {title: "Euphoria", id: 85552},          // Added
-  {title: "Ted", id: 201834},              // Added
-  {title: "The Capture", id: 93166}        // Added
+  {title: "Euphoria", id: 85552},
+  {title: "Ted", id: 201834},
+  {title: "The Capture", id: 93166},
+  {title: "South Park", id: 2190}          // Added
 ];
 
 // Get Continue Watching with poster recovery
@@ -163,6 +164,7 @@ function renderRows(searchTerm = '') {
         shows.find(s => s.id === 1396),  // Breaking Bad
         shows.find(s => s.id === 60059), // Better Call Saul
         shows.find(s => s.id === 76479), // The Boys
+        shows.find(s => s.id === 2190),  // South Park
         ...movies.slice(0, 12),
         ...shows.slice(4, 20)
       ].filter(Boolean)
